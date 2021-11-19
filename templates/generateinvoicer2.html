@@ -1,0 +1,945 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Billing System | Generate Invoice</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{%static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="{%static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{%static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{%static 'plugins/jqvmap/jqvmap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{%static 'dist/css/adminlte.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{%static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{%static 'plugins/daterangepicker/daterangepicker.css' %}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{%static 'plugins/summernote/summernote-bs4.min.css' %}">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
+
+  
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="{%static 'dist/img/rbtechlogo.png' %}" alt="RBTechLogo" height="60" width="60">
+  </div>
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="index2.html" class="nav-link">Home</a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% static 'index3.html' %}" class="brand-link">
+      <img src="{% static 'dist/img/rbtechlogo.png'%}" alt="RB Tech Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Billing System</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{%static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">Company Name & logo</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="index.html" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          
+          
+          
+        <!--Module 1 - Master Panel-->  
+          <li class="nav-header">Master Panel</li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa fa-users"></i>
+              <p>
+                Users
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+            <!--Sub option - Add User-->
+              <li class="nav-item">
+                <a href="../crud/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add User</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Users-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Users</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy" aria-hidden="true"></i>
+              <p>
+                Company Info
+                <i class="nav-icon fa"></i>
+              </p>
+            </a>
+        
+
+        <!--Module 2 - Goods Management-->  
+          <li class="nav-header">Goods Management</li>
+          
+          <!--Item 1 - Vendor-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa fa-user"></i>
+              <p>
+                Vendor
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+            <!--Sub option - Add New Vendor-->
+              <li class="nav-item">
+                <a href="../../vendors/addvendor/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add New Vendor</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Vendors-->  
+              <li class="nav-item">
+                <a href="../../vendors/managevendors/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Vendors</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        <!--Item 2 - Purchase Booking-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Purchase Booking
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Add New Purchase Booking-->
+              <li class="nav-item">
+                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>New Purchase</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Purchase-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Purchases</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        <!--Item 2 - Profit Margin-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Profit Margin
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Show Current Purchase Margin-->
+              <li class="nav-item">
+                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Current Profit Margin</p>
+                </a>
+              </li>
+
+            <!--Sub option - History-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>History</p>
+                </a>
+              </li>
+
+            <!--Sub option - Stock remained-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Stock Remained</p>
+                </a>
+              </li>
+          
+            </ul>
+          </li>
+
+
+
+        <!--Module 3 - Customer Bill Generation-->  
+          <li class="nav-header">Customer Bill Generation</li>
+
+          <!--Item 1 - Customers-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa fa-user"></i>
+              <p>
+                Customers
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+            <!--Sub option - Add New Customer-->
+              <li class="nav-item">
+                <a href="../../customers/addcustomer/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add New Customer</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Customers-->  
+              <li class="nav-item">
+                <a href="../../customers/managecustomers/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Customers</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        
+        <!--Item 2 - Products-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Products
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Add New Product-->
+              <li class="nav-item">
+                <a href="../../products/addproduct" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add New Product</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Products-->  
+              <li class="nav-item">
+                <a href="../../products/manageproducts/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Products</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        <!--Item 3 - Invoices-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Invoices
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Generate Invoice-->
+              <li class="nav-item">
+                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Generate Invoice</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Invoices-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Invoices</p>
+                </a>
+              </li>
+
+          
+        
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Generate Invoice</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Generate Invoice</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+     <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="image">
+                    <img src="{{companydata.logoimg.url}}" alt="User Image" width="140" height="150">
+                    <h4 class="company_name">{{companydata.name}}</h3>
+                  </div>
+                    <div class="float-right">Date: 2/10/2014</div>    
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  From
+                  <address>
+                    <strong>{{companydata.name}}</strong><br>
+                    {{companydata.addr}} <br>
+                    Phone: {{companydata.mobile}}<br>
+                    Email: {{companydata.email}}
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  To
+                  <address>
+                    <select class="form-control chosen" data-row-id="row_1" id="customer" name="customer[]" style="width:80%;" onchange="getCustData()" required>
+                            <option value=""></option>
+                            {%for selectcustomer in customerdata%}
+                              <option value="">{{selectcustomer.cust_name}}</option>
+                            {%endfor%}  
+                    </select>
+                    <input type="hidden" value='{{custdata}}' id="custjs">
+                    <br>
+                     <div id="custaddress">Address :  </div>
+                     <div id="custphno">Phone :  </div> 
+                     <div id="custemail">Email :  </div>
+                  </address>
+                </div>
+
+                <div class="col-sm-4 invoice-col">
+                  <input type="checkbox" id="igstcheck" name="igstcheck" value="igstchk">
+                    <label for="igstcheck"> IGST </label><br>
+                </div>
+                
+              </div>
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-bordered" id="product_info_table">
+                  <thead>
+                    <tr>
+                      <th style="width:5%">pno</th>
+                      <th style="width:25%">Product</th>
+                      <th style="width:10%">Qty</th>
+                      <th style="width:10%">Rate</th>
+                      <th style="width:10%">Total</th>
+                      <th style="width:10%">CGST %</th>
+                      <th style="width:10%">SGST %</th>
+                      <th style="width:10%">IGST %</th>
+                      <th style="width:10%">Total Amount</th>
+                      <th style="width:5%"><button type="button" value = "+" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                    </tr>
+                  </thead>
+
+                   <tbody>
+                     <tr id="row_1" class="trc">
+                     <td><input type="text" value = '1' name="qty[]" id="pno_1" class="form-control" required  ></td>
+
+                       <td>
+                        <select class="form-control chosen" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
+                            <option value=""></option>
+                            {%for selectedproducto in selectproduct%}
+                              <option value="{{selectedproducto.id}}">{{selectedproducto.product_name}}</option>
+                            {%endfor%}  
+                        </select>
+                        <input type="hidden" value='{{productdata}}' id="productjs">
+                        </td>
+                        <td><input type="text" name="qty[]" id="qty_1" class="form-control" required  oninput="ProductQtyChanged(1)"></td>
+                        <td>
+                          <input type="text" name="rate[]" id="rate_1" class="form-control" disabled autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" name="total[]" id="total_1" class="form-control" disabled autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" name="cgst[]" id="cgst_1" class="form-control" disabled autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" name="sgst[]" id="sgst_1" class="form-control" disabled autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" name="igst[]" id="igst_1" class="form-control" disabled autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" name="totalamount[]" id="totalamount_1" class="form-control" disabled autocomplete="off">
+                        </td>
+                        <td><button type="button" class="btn btn-default" onclick="removeRow('1')"><i class="fa fa-minus"></i></button></td>
+                     </tr>
+                    
+                   </tbody>
+                </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+             
+
+              <div class="row">
+                <div class="col-12 " >
+                  <div class="form-group col-sm-5" style="float:right;">
+                    <label for="gross_amount" class="control-label">Gross Amount :</label>
+                    <input type="text" class="form-control" id="gross_amount" name="gross_amount" disabled autocomplete="off" >
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12 " >
+                  <div class="form-group col-sm-5" style="float:right;">
+                    <label for="discount" class="control-label">Discount :</label>
+                    <input type="text" class="form-control" id="discount" name="discount" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12 " >
+                  <div class="form-group col-sm-5" style="float:right;">
+                    <label for="net_amount" class="control-label">Net Amount :</label>
+                    <input type="text" class="form-control" id="net_amount" name="net_amount" disabled autocomplete="off">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row no-print">
+                <div class="col-12">
+                  <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                  <input type="button" value = "Save" class="btn btn-default"/> 
+                </div>
+              </div> 
+                             
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    
+    </div>
+  <!-- /.content-wrapper -->
+ 
+
+    
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{%static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{%static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{%static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{%static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{%static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{%static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{%static 'plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{%static 'plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{%static 'plugins/jszip/jszip.min.js' %}"></script>
+<script src="{%static 'plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{%static 'plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{%static 'plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{%static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{%static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{%static 'dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{%static 'dist/js/demo.js' %}"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["excel", "pdf", "print"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+
+
+<!-- jQuery 3 -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button);
+  </script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- Morris.js charts -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/raphael/raphael.min.js"></script>
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/morris.js/morris.min.js"></script>
+  <!-- Sparkline -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+  <!-- jvectormap -->
+  <script src="https://loirevoda.in/wp-console/assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+  <script src="https://loirevoda.in/wp-console/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+  <!-- jQuery Knob Chart -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+  <!-- daterangepicker -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/moment/min/moment.min.js"></script>
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <!-- datepicker -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+  <!-- Bootstrap WYSIHTML5 -->
+  <script src="https://loirevoda.in/wp-console/assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+  <!-- Slimscroll -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- FastClick -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/fastclick/lib/fastclick.js"></script>
+  <script src="https://loirevoda.in/wp-console/assets/plugins/fileinput/fileinput.min.js"></script>
+  <!-- Select2 -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/select2/dist/js/select2.full.min.js"></script>
+  <!-- ChartJS -->
+  <script src="https://loirevoda.in/wp-console/assets/bower_components/Chart.js/Chart.js"></script>
+  <!-- AdminLTE App -->  
+  <script src="https://loirevoda.in/wp-console/assets/dist/js/adminlte.min.js"></script>
+  
+  <!-- AdminLTE for demo purposes -->
+  <script src="https://loirevoda.in/wp-console/assets/dist/js/demo.js"></script>
+
+  <!-- DataTables -->
+<script src="https://loirevoda.in/wp-console/assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="https://loirevoda.in/wp-console/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"> </script>
+
+
+
+<script type = "text/javascript">
+    const productdata = document.getElementById("productjs");
+    const productjsdata= JSON.parse(productdata.value);
+    console.log(productjsdata);
+
+    const customerdata = document.getElementById("custjs");
+    const customerjsdata= JSON.parse(customerdata.value);
+    console.log(customerjsdata);
+    $(document).ready(function() {
+        $("#add_row").click(function(){
+      
+            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+            var row_id = count_table_tbody_tr + 1;
+            var addcontrols = "<tr id = 'row_"+row_id+"' class= 'trc'>" 
+                addcontrols +="<td> <input type = 'text' value = '"+row_id +"' id = 'pno_'"+row_id+"''> </td> "
+                console.log("row added" + row_id);
+                addcontrols+= "<td> <select class='form-control chosen' data-row-id='"+row_id+"' id='product_"+row_id+"' name='product[]' style='width:100%;' onchange='getProductData("+row_id+")' >"
+                addcontrols+= "<option value = ''> </option>"  
+                for (let i = 0; i < productjsdata.length; i++) { 
+                    addcontrols+= "<option value = '"+productjsdata[i].fields.product_name+"'>"+productjsdata[i].fields.product_name+" </option>"
+                };
+                addcontrols+= "</select> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'qty[]' id='qty_"+row_id+"' class='form-control'  autocomplete='off'  oninput='ProductQtyChanged("+row_id+")'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'rate[]' id='rate_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'total[]' id='total_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'cgst[]' id='cgst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'sgst[]' id='sgst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'igst[]' id='igst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'totalamount[]' id='totalamount_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <button type='button' class='btn btn-default' onclick='removeRow(\""+row_id+"\")'><i class='fa fa-minus'></i></button> </td>"
+                addcontrols+="</tr>";
+                $("table tbody").append(addcontrols);
+                $(".chosen").chosen();
+
+        });
+
+      /*
+        $("#delrow").click(function(){
+            $("#product_info_table tbody").find('input[name="checkbox"]').each(function(){
+                if($(this).is(":checked"))
+                {
+                    $(this).parents("tr").remove();
+                }
+            });            
+        });
+      */
+       
+    });
+    function removeRow(tr_id)
+        {
+            //subGrossAmount(tr_id);
+            $("#product_info_table tbody tr#row_"+tr_id).remove();
+            console.log("row removed: "+tr_id);
+            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+            console.log("table length :"+count_table_tbody_tr);
+        /*
+            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+            for (let i =0; i<count_table_tbody_tr; i++)
+            {
+                $("#product_info_table tbody tr").id = "row_"+i;
+                console.log("Table Rows = " )
+            }
+
+        */
+           // $("#row_"+tr_id).nextAll().each(function () {
+             //   var id = $(this).prop("id", function (index, idvalue) {
+                //return idvalue - 1;
+             //console.log("each :" + tr_id);
+            //});
+          //});
+
+
+        var rows = document.getElementsByClassName('trc');
+        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+        
+        for (let i=1; i<count_table_tbody_tr + 1; i++ )
+        {
+            rows.id = "row_"+i;
+            console.log(rows.id);
+        }
+        
+        
+        
+        //changeRowId();
+
+                      
+        }
+
+
+    function changeRowId()
+    {
+
+        var rows = document.getElementsByClassName('trc');
+        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+        ele = document.getElementById('')
+        for (let i=1; i<count_table_tbody_tr + 1; i++ )
+        {
+            rows.id = "row_"+i;
+            console.log(rows.id);
+        }
+    }
+  
+      
+    function getProductData(row_id)
+      {
+        console.log(row_id);
+        var product_id = "product_"+row_id; 
+        let ele = document.getElementById(product_id);
+        
+        var rate_id = "rate_"+row_id;
+        var cgst_id = "cgst_"+row_id;
+        var sgst_id = "sgst_"+row_id;
+        var igst_id = "igst_"+row_id;
+        var qty_id = "qty_"+row_id;
+        var total_id = "total_"+row_id;
+        var totalamount_id = "totalamount_"+row_id;
+   
+        var selectedproductname = ele.options[ele.selectedIndex].text;  
+
+        for (let i = 0; i < productjsdata.length; i++) 
+        {
+            if(selectedproductname == productjsdata[i].fields.product_name)
+            {
+               pk = i;
+            }
+        }
+
+        document.getElementById(rate_id).value= productjsdata[pk].fields.product_price
+        document.getElementById(qty_id).value= '1'
+        document.getElementById(total_id).value= productjsdata[pk].fields.product_price
+
+        if(document.getElementById("igstcheck").checked)
+        {
+          document.getElementById(igst_id).value= productjsdata[pk].fields.product_igst//igst value
+          var totalrate = parseInt(document.getElementById(total_id).value) //total rate
+          var totalgstvalue = totalrate * (parseInt(document.getElementById(igst_id).value) / 100) // total gst  = total rate * (igst /100) 
+          var totalamountvalue = totalrate + totalgstvalue // total amount = total rate + total gst
+          document.getElementById(totalamount_id).value= totalamountvalue // put total amount in total amount textbox
+        }
+        else
+        {
+          document.getElementById(cgst_id).value= productjsdata[pk].fields.product_cgst // cgst value
+          document.getElementById(sgst_id).value= productjsdata[pk].fields.product_sgst // sgst value 
+          var totalrate = parseInt(document.getElementById(total_id).value) //total rate
+          var totalgstvalue = totalrate * ((parseInt(document.getElementById(sgst_id).value)+ parseInt(document.getElementById(cgst_id).value)) / 100) // total gst = total rate *((sgst + cgst)/100)
+          var totalamountvalue = totalrate + totalgstvalue // total amount = total rate + total gst
+          document.getElementById(totalamount_id).value= totalamountvalue // put total amount in total amount textbox
+        }   
+
+       // getGrossAmount(row_id);
+      }
+
+      function getCustData()
+      {
+        let ele = document.getElementById("customer");
+        
+        var selectedcustname = ele.options[ele.selectedIndex].text;  
+
+        for (let i = 0; i < customerjsdata.length; i++) 
+        {
+            if(selectedcustname == customerjsdata[i].fields.cust_name)
+            {
+               ck = i;
+            }
+        }
+
+        custaddressele = document.getElementById("custaddress")
+        custaddressele.innerHTML += customerjsdata[ck].fields.cust_address
+        custphnoele = document.getElementById("custphno")
+        custphnoele.innerHTML += customerjsdata[ck].fields.cust_phno
+        custemailele = document.getElementById("custemail")
+        custemailele.innerHTML += customerjsdata[ck].fields.cust_email
+      
+      }
+  
+      function ProductQtyChanged(row_id)
+      {
+        var qty_id = "qty_"+row_id; 
+        var qi = document.getElementById(qty_id).value; // quantity value stored in i
+           
+        var rate_id = "rate_"+row_id; 
+        var productrate = document.getElementById(rate_id).value; //rate value stored  
+
+        var total_id = "total_"+row_id;
+        document.getElementById(total_id).value= productrate * qi; // total rate when quantity changed
+
+        
+
+        var product_id = "product_"+row_id; 
+        var cgst_id = "cgst_"+row_id;
+        var sgst_id = "sgst_"+row_id;
+        var igst_id = "igst_"+row_id;
+        var totalamount_id = "totalamount_"+row_id;
+        let ele = document.getElementById(product_id);
+        var selectedproductname = ele.options[ele.selectedIndex].text;  
+        for (let i = 0; i < productjsdata.length; i++) 
+        {
+            if(selectedproductname == productjsdata[i].fields.product_name)
+            {
+               pk = i;
+            }
+        }
+
+        if(document.getElementById("igstcheck").checked) // condition checks whether product applied igst or cgst-sgst
+        {
+          var igstvalue= productjsdata[pk].fields.product_igst; // igst value stores in igstvalue from database
+          document.getElementById(igst_id).value = igstvalue * qi;
+
+          var totalrate = productjsdata[pk].fields.product_price;
+          var totalgstvalue = totalrate * (parseInt(productjsdata[pk].fields.product_igst)/100);
+          var totalamountvalue = (totalrate + totalgstvalue) * qi;
+          document.getElementById(totalamount_id).value= totalamountvalue // put total amount in total amount textbox
+
+        }
+        else
+        {
+          var cgstvalue= productjsdata[pk].fields.product_cgst; // cgst value stores in igstvalue from database
+          document.getElementById(cgst_id).value = cgstvalue * qi;
+
+          var sgstvalue= productjsdata[pk].fields.product_sgst; // sgst value stores in igstvalue from database
+          document.getElementById(sgst_id).value = sgstvalue * qi;
+
+          var totalrate = productjsdata[pk].fields.product_price;
+          var totalgstvalue = totalrate * ((parseInt(productjsdata[pk].fields.product_cgst) + parseInt(productjsdata[pk].fields.product_sgst)) /100);
+          var totalamountvalue = (totalrate + totalgstvalue) * qi;
+          document.getElementById(totalamount_id).value= totalamountvalue // put total amount in total amount textbox
+
+        }
+
+        getGrossAmount(row_id);   
+        
+      }
+
+      const totalAmountArray = [];
+      var storedgrossamount = 0;
+      function getGrossAmount(row_id)
+      {
+        var product_id = "product_"+row_id; 
+        let ele = document.getElementById(product_id);
+        var selectedproductname = ele.options[ele.selectedIndex].text;  
+
+        var totalamount_id = "totalamount_"+row_id; 
+        var tamount = document.getElementById(totalamount_id).value;
+
+       
+
+        var productrow = totalAmountArray.find(x => x.rowid == row_id);
+        if (productrow) {
+          productrow.ptamount = tamount;
+        }
+        else{
+           var object = {
+            rowid: row_id,
+            ptamount : tamount
+          }
+          totalAmountArray.push(object);
+        }
+        console.log(totalAmountArray);
+
+
+        var grossamountvalue = 0;
+        for (let i = 0; i < totalAmountArray.length; i++) 
+        {
+            grossamountvalue = grossamountvalue + parseInt(totalAmountArray[i].ptamount);
+        }
+        
+        
+        document.getElementById("gross_amount").value= grossamountvalue;
+        storedgrossamount = grossamountvalue;
+        console.log(storedgrossamount);
+        
+      }
+
+
+      function subGrossAmount(row_id)
+      {
+          //var productrow = totalAmountArray.find(x => x.rowid == row_id);
+         // if(productrow)
+          //{
+           // delete totalAmountArray.rowid[row_id];
+            //delete totalAmountArray.ptamount[row_id];
+          //}
+
+        delete totalAmountArray[row_id - 1];
+        totalAmountArray.filter(x => x !== null);
+        //totalAmountArray.length = totalAmountArray.length - 1;
+        console.log(totalAmountArray);
+
+
+        var currentgrossamount = storedgrossamount
+        console.log(currentgrossamount);
+        var totalamount_id = "totalamount_"+row_id; 
+        var tamount = parseInt(document.getElementById(totalamount_id).value);
+        console.log(tamount);
+        sgrossamountvalue = currentgrossamount - tamount;
+        console.log(sgrossamountvalue);
+        storedgrossamount = sgrossamountvalue;
+        console.log(totalAmountArray);
+        
+
+        /*
+          var total_id = "total_"+row_id;
+          var totalvalue = parseInt(document.getElementById("gross_amount").value);
+          sgrossamountvalue = sgrossamountvalue - totalvalue;
+          console.log(sgrossamountvalue);
+          document.getElementById("gross_amount").value= sgrossamountvalue;
+
+        */
+      }
+
+
+    $(".chosen").chosen();
+    
+</script>
+
+
+</body>
+</html>

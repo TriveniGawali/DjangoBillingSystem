@@ -1,0 +1,402 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Billing System | Dashboard</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{%static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="{%static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{%static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{%static 'plugins/jqvmap/jqvmap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{%static 'dist/css/adminlte.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{%static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{%static 'plugins/daterangepicker/daterangepicker.css' %}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{%static 'plugins/summernote/summernote-bs4.min.css' %}">
+  
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="{%static 'dist/img/rbtechlogo.png' %}" alt="RBTechLogo" height="60" width="60">
+  </div>
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="index2.html" class="nav-link">Home</a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% static 'index3.html' %}" class="brand-link">
+      <img src="{% static 'dist/img/rbtechlogo.png'%}" alt="RB Tech Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Billing System</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{{companydata.logoimg.url}}" class="img-circle elevation-2" alt="User Image" style="background-color:white;">
+        </div>
+        <div class="info">
+          <a href="company/companyinfo/" class="d-block">{{companydata.name}}</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="index.html" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          
+          
+          
+        <!--Module 1 - Master Panel-->  
+          <li class="nav-header">Master Panel</li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa fa-users"></i>
+              <p>
+                Users
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+            <!--Sub option - Add User-->
+              <li class="nav-item">
+                <a href="master/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add User</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Users-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Users</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="company/companyinfo/" class="nav-link">
+              <i class="nav-icon fas fa-copy" aria-hidden="true"></i>
+              <p>
+                Company Info
+                <i class="nav-icon fa"></i>
+              </p>
+            </a>
+        
+
+        <!--Module 2 - Goods Management-->  
+          <li class="nav-header">Goods Management</li>
+          
+          <!--Item 1 - Vendor-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa fa-user"></i>
+              <p>
+                Vendor
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+            <!--Sub option - Add New Vendor-->
+              <li class="nav-item">
+                <a href="vendors/addvendor/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add New Vendor</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Vendors-->  
+              <li class="nav-item">
+                <a href="vendors/managevendors" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Vendors</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        <!--Item 2 - Purchase Booking-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Purchase Booking
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Add New Purchase Booking-->
+              <li class="nav-item">
+                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>New Purchase</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Purchase-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Purchases</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        <!--Item 2 - Profit Margin-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Profit Margin
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Show Current Purchase Margin-->
+              <li class="nav-item">
+                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Current Profit Margin</p>
+                </a>
+              </li>
+
+            <!--Sub option - History-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>History</p>
+                </a>
+              </li>
+
+            <!--Sub option - Stock remained-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Stock Remained</p>
+                </a>
+              </li>
+          
+            </ul>
+          </li>
+
+
+
+        <!--Module 3 - Customer Bill Generation-->  
+          <li class="nav-header">Customer Bill Generation</li>
+
+          <!--Item 1 - Customers-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa fa-user"></i>
+              <p>
+                Customers
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+            <!--Sub option - Add New Customer-->
+              <li class="nav-item">
+                <a href="customers/addcustomer" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add New Customer</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Customers-->  
+              <li class="nav-item">
+                <a href="customers/managecustomers" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Customers</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        
+        <!--Item 2 - Products-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Products
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Add New Product-->
+              <li class="nav-item">
+                <a href="products/addproduct/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add New Product</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Products-->  
+              <li class="nav-item">
+                <a href="products/manageproducts/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Products</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        <!--Item 3 - Invoices-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Invoices
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            <!--Sub option - Generate Invoice-->
+              <li class="nav-item">
+                <a href="invoices/generateinvoice" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Generate Invoice</p>
+                </a>
+              </li>
+
+            <!--Sub option - Manage Invoices-->  
+              <li class="nav-item">
+                <a href="pages/mailbox/compose.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Invoices</p>
+                </a>
+              </li>
+
+          
+        
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{%static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{%static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="{%static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{%static 'plugins/chart.js/Chart.min.js' %}"></script>
+<!-- Sparkline -->
+<script src="{%static 'plugins/sparklines/sparkline.js' %}"></script>
+<!-- JQVMap -->
+<script src="{%static 'plugins/jqvmap/jquery.vmap.min.js' %}"></script>
+<script src="{%static 'plugins/jqvmap/maps/jquery.vmap.usa.js' %}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{%static 'plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+<!-- daterangepicker -->
+<script src="{%static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<!-- Summernote -->
+<script src="{% static 'plugins/summernote/summernote-bs4.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
+</body>
+</html>
