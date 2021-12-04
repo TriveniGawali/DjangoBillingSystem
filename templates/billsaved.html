@@ -1,0 +1,64 @@
+bill saved!
+
+<form action = "../addorderproducts/" method = "POST">
+
+{%csrf_token%}
+
+<select name = "cust_name">
+    <option> vijay </option>
+    <option> ajay </option>
+</select><br>
+
+<input type ="text" style="border: 0px none;" name = 'cust_addr' placeholder="cust_addr" value = "pune" readonly>  </input><br>
+<input type ="text" name = 'cust_phno' placeholder="cust_phno">  </input><br>
+<input type ="text" name = 'cust_email' placeholder="cust_email"> </input><br>
+
+<input type ="text" style="border: 0px none;" name = 'order_date' value= '2021-11-27' > </input><br>
+<input type ="text" style="border: 0px none;" name = 'order_time' value='5:5:5' >  </input><br>
+
+
+<input type ="text" name = 'gross_amt' placeholder="gross_amt">  </input><br>
+<input type ="text" name = 'discount' placeholder="discount">  </input><br>
+<input type ="text" name = 'net_amt' placeholder="net_amt">  </input><br>
+
+<hr/>
+
+<input type ="text" style="border: 0px none;" name = 'orderno' placeholder="cust_addr" value = 1 readonly>  </input><br>
+<select name = "productname">
+    <option> tv </option>
+    <option> sw </option>
+</select><br>
+<input type ="text" style="border: 0px none;" name = 'qty' placeholder="qty" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'rate' placeholder="rate" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'total' placeholder="total" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'cgst' placeholder="cgst" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'sgst' placeholder="sgst" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'igst' placeholder="igst" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'totalamount' placeholder="totalamount" >  </input><br>
+
+<hr/>
+
+
+<input type ="text" style="border: 0px none;" name = 'orderno' placeholder="cust_addr" value = 1 readonly>  </input><br>
+<select name = "productname">
+    <option> tv </option>
+    <option> sw </option>
+</select><br>
+<input type ="text" style="border: 0px none;" name = 'qty' placeholder="qty" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'rate' placeholder="rate" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'total' placeholder="total" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'cgst' placeholder="cgst" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'sgst' placeholder="sgst" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'igst' placeholder="igst" >  </input><br>
+<input type ="text" style="border: 0px none;" name = 'totalamount' placeholder="totalamount" >  </input><br>
+
+
+<button type = "submit" > addorder </button><br>
+
+ {% if messages %}
+                    {% for mess in messages %}
+                        <b style = "color : blue"> {{mess}} </b>
+                    {%endfor%}
+                  {% endif%}
+
+</form>

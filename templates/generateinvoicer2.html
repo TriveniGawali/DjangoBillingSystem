@@ -31,7 +31,7 @@
 
   
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" onload="startTime() , getInvoiceNo()">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -343,7 +343,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Generate Invoice</h1>
+            <h1>Generate Invoice</h1><br>
+            <a href="../../invoices/manageinvoices" class="btn btn-warning">Show All Invoices</a>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -365,6 +366,8 @@
 
             <!-- Main content -->
             <div class="invoice p-3 mb-3">
+              <form action="addorderproducts/" method="POST">
+              {% csrf_token %}
               <!-- title row -->
               <div class="row">
                 <div class="col-12">
@@ -372,7 +375,10 @@
                     <img src="{{companydata.logoimg.url}}" alt="User Image" width="140" height="150">
                     <h4 class="company_name">{{companydata.name}}</h3>
                   </div>
-                    <div class="float-right">Date: 2/10/2014</div>    
+                    <div class="float-right"> <input type = "text" id="timelabel" name="order_time" style="border: 0px none;" size="5" readonly> </div>  
+                    <div class="float-right"> <label id="-"> Time: </label> </div>      
+                    <div class="float-right"> <input type = "text" id="datelabel" name="order_date" style="border: 0px none;" size="7" readonly> </div> 
+                    <div class="float-right"> <label id="-"> Date: </label> </div>         
                 </div>
                 <!-- /.col -->
               </div>
@@ -384,24 +390,26 @@
                     <strong>{{companydata.name}}</strong><br>
                     {{companydata.addr}} <br>
                     Phone: {{companydata.mobile}}<br>
-                    Email: {{companydata.email}}
+                    Email: {{companydata.email}}<br>
+                    Invoice No: <input type = "text" id = "invoiceno" name="orderno" style="border: 0px none;" readonly onload = "getInvoiceNo()">
+                    <input type = "hidden" value='{{orderdataj}}' id="orderjs" >
                   </address>
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
                   To
                   <address>
-                    <select class="form-control chosen" data-row-id="row_1" id="customer" name="customer[]" style="width:80%;" onchange="getCustData()" required>
-                            <option value=""></option>
+                    <select class="form-control chosen" data-row-id="row_1" id="customer" name="cust_name" style="width:80%;" onchange="getCustData()" required>
+                      <option > </option>
                             {%for selectcustomer in customerdata%}
-                              <option value="">{{selectcustomer.cust_name}}</option>
+                              <option >{{selectcustomer.cust_name}}</option>
                             {%endfor%}  
                     </select>
                     <input type="hidden" value='{{custdata}}' id="custjs">
                     <br>
-                     <div id="custaddress">Address :  </div>
-                     <div id="custphno">Phone :  </div> 
-                     <div id="custemail">Email :  </div>
+                     <div><input type = "text" id="custaddress" name="cust_addr" placeholder="Customer Address" style="border: 0px none;" readonly > </div>
+                     <div><input type = "text" id="custphno" name = "cust_phno" placeholder="Phone Number" style="border: 0px none;" readonly>  </div> 
+                     <div><input type = "text" id="custemail" name ="cust_email" placeholder="Email-Id" style="border: 0px none;" readonly> </div>
                   </address>
                 </div>
 
@@ -412,7 +420,7 @@
                 
               </div>
               <!-- /.row -->
-
+                
               <!-- Table row -->
               <div class="row">
                 <div class="col-12 table-responsive">
@@ -433,38 +441,47 @@
                   </thead>
 
                    <tbody>
-                     <tr id="row_1" class="trc">
-                     <td><input type="text" value = '1' name="qty[]" id="pno_1" class="form-control" required  ></td>
+                     <tr id="row_1" class ="trc">
+                     <td><input type="text"  value = '1' name="pno[]" id="pno_1" class="form-control trcinput" required  ></td>
 
                        <td>
-                        <select class="form-control chosen" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
-                            <option value=""></option>
+                        <select class="form-control chosen trs" data-row-id="row_1" id="product_1" name="productname" style="width:100%;" onchange="getProductData(event, 1)" required>
+                            <option ></option>
                             {%for selectedproducto in selectproduct%}
-                              <option value="{{selectedproducto.id}}">{{selectedproducto.product_name}}</option>
+                              <option >{{selectedproducto.product_name}}</option>
                             {%endfor%}  
                         </select>
+                        <input type="hidden" id = "product_ar" name ="product_ar" >
                         <input type="hidden" value='{{productdata}}' id="productjs">
                         </td>
-                        <td><input type="text" name="qty[]" id="qty_1" class="form-control" required  oninput="ProductQtyChanged(1)"></td>
                         <td>
-                          <input type="text" name="rate[]" id="rate_1" class="form-control" disabled autocomplete="off">
+                          <input type="text" name="qty" id="qty_1" class="form-control trq" required autocomplete='off' oninput="ProductQtyChanged(1)"></td>
+                          <input type="hidden" id = "qty_ar" name = "qty_ar">
+                        <td>
+                          <input type="text" name="rate" id="rate_1" class="form-control trr" readonly>
+                          <input type="hidden" id = "rate_ar" name ="rate_ar">
                         </td>
                         <td>
-                          <input type="text" name="total[]" id="total_1" class="form-control" disabled autocomplete="off">
+                          <input type="text" name="total" id="total_1" class="form-control trt" readonly>
+                          <input type="hidden" id = "total_ar" name ="total_ar" >
                         </td>
                         <td>
-                          <input type="text" name="cgst[]" id="cgst_1" class="form-control" disabled autocomplete="off">
+                          <input type="text" name="cgst" id="cgst_1" class="form-control trcg" value = '0' readonly>
+                          <input type="hidden" id = "cgst_ar" name = "cgst_ar">
                         </td>
                         <td>
-                          <input type="text" name="sgst[]" id="sgst_1" class="form-control" disabled autocomplete="off">
+                          <input type="text" name="sgst" id="sgst_1" class="form-control trsg"value = '0' readonly>
+                          <input type="hidden" id = "sgst_ar" name = "sgst_ar">
                         </td>
                         <td>
-                          <input type="text" name="igst[]" id="igst_1" class="form-control" disabled autocomplete="off">
+                          <input type="text" name="igst" id="igst_1" class="form-control trig" value = '0' readonly>
+                          <input type="hidden" id = "igst_ar" name ="igst_ar"  >
                         </td>
                         <td>
-                          <input type="text" name="totalamount[]" id="totalamount_1" class="form-control" disabled autocomplete="off">
+                          <input type="text" name="totalamount" id="totalamount_1" class="form-control trta" readonly>
+                          <input type="hidden" id = "totalamount_ar" name = "totalamount_ar">
                         </td>
-                        <td><button type="button" class="btn btn-default" onclick="removeRow('1')"><i class="fa fa-minus"></i></button></td>
+                        <td class = "removed_btn"><button type="button" class="btn btn-default " onclick="removeRow(event)"><i class="fa fa-minus"></i></button></td>
                      </tr>
                     
                    </tbody>
@@ -479,7 +496,7 @@
                 <div class="col-12 " >
                   <div class="form-group col-sm-5" style="float:right;">
                     <label for="gross_amount" class="control-label">Gross Amount :</label>
-                    <input type="text" class="form-control" id="gross_amount" name="gross_amount" disabled autocomplete="off" >
+                    <input type="text" class="form-control" id="gross_amount" name="gross_amt" readonly >
                   </div>
                 </div>
               </div>
@@ -487,8 +504,8 @@
               <div class="row">
                 <div class="col-12 " >
                   <div class="form-group col-sm-5" style="float:right;">
-                    <label for="discount" class="control-label">Discount :</label>
-                    <input type="text" class="form-control" id="discount" name="discount" autocomplete="off">
+                    <label for="discount" class="control-label">Discount % :</label>
+                    <input type="text" class="form-control" id="discount" autocomplete='off' name="discount" value="0" oninput=getNetAmount()>
                   </div>
                 </div>
               </div>
@@ -497,18 +514,29 @@
                 <div class="col-12 " >
                   <div class="form-group col-sm-5" style="float:right;">
                     <label for="net_amount" class="control-label">Net Amount :</label>
-                    <input type="text" class="form-control" id="net_amount" name="net_amount" disabled autocomplete="off">
+                    <input type="text" class="form-control" id="net_amount" name="net_amt" readonly>
                   </div>
                 </div>
               </div>
 
               <div class="row no-print">
                 <div class="col-12">
-                  <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                  <input type="button" value = "Save" class="btn btn-default"/> 
+                  <a href="printinvoice/" rel="noopener" target="_blank" class="btn btn-default" id = "printbutton"><i class="fas fa-print" ></i> Print</a>
+                  <input type="hidden" id = "tablerowcnt" name = "tablerowcnt">
+                  <button type="submit" class="btn btn-default" onclick = "productRecordsStore()" >Save</button> 
                 </div>
               </div> 
-                             
+
+              <a href = "billsaved/"> addorders </a>
+              <div>
+                {% if messages %}
+                {% for mess in messages %}
+                    <b style = "color : rgb(90, 88, 245)"> {{mess}} </b>
+                {%endfor%}
+              {% endif%}
+              </div>
+             
+            </form>             
             </div>
             <!-- /.invoice -->
           </div><!-- /.col -->
@@ -633,107 +661,180 @@
     const customerdata = document.getElementById("custjs");
     const customerjsdata= JSON.parse(customerdata.value);
     console.log(customerjsdata);
+
+    const orderdata = document.getElementById("orderjs");
+    const orderjsdata= JSON.parse(orderdata.value);
+    console.log(orderjsdata);
+
+    
+  /*--------------------------------------------------- Add New Row in Table ---------------------------------------------*/
     $(document).ready(function() {
         $("#add_row").click(function(){
       
-            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-            var row_id = count_table_tbody_tr + 1;
-            var addcontrols = "<tr id = 'row_"+row_id+"' class= 'trc'>" 
-                addcontrols +="<td> <input type = 'text' value = '"+row_id +"' id = 'pno_'"+row_id+"''> </td> "
+          var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+          var row_id = count_table_tbody_tr + 1;
+            var addcontrols = "<tr id = 'row_"+row_id+"' class='trc' >" 
+                addcontrols +="<td> <input type = 'text' class= 'trcinput' value = '"+row_id +"' id = 'pno_'"+row_id+"''> </td> "
                 console.log("row added" + row_id);
-                addcontrols+= "<td> <select class='form-control chosen' data-row-id='"+row_id+"' id='product_"+row_id+"' name='product[]' style='width:100%;' onchange='getProductData("+row_id+")' >"
-                addcontrols+= "<option value = ''> </option>"  
+                addcontrols+= "<td> <select class='form-control chosen trs' data-row-id='"+row_id+"' id='product_"+row_id+"' name='product' style='width:100%;' onchange='getProductData(event,"+row_id+")' >"
+                addcontrols+= "<option> </option>"  
                 for (let i = 0; i < productjsdata.length; i++) { 
                     addcontrols+= "<option value = '"+productjsdata[i].fields.product_name+"'>"+productjsdata[i].fields.product_name+" </option>"
                 };
                 addcontrols+= "</select> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'qty[]' id='qty_"+row_id+"' class='form-control'  autocomplete='off'  oninput='ProductQtyChanged("+row_id+")'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'rate[]' id='rate_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'total[]' id='total_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'cgst[]' id='cgst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'sgst[]' id='sgst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'igst[]' id='igst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'totalamount[]' id='totalamount_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <button type='button' class='btn btn-default' onclick='removeRow(\""+row_id+"\")'><i class='fa fa-minus'></i></button> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'qty' id='qty_"+row_id+"' class='form-control trq' autocomplete='off' oninput='ProductQtyChanged("+row_id+")'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'rate' id='rate_"+row_id+"' class='form-control trr' readonly> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'total' id='total_"+row_id+"' class='form-control trt' readonly> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'cgst' id='cgst_"+row_id+"' class='form-control trcg' value='0' readonly> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'sgst' id='sgst_"+row_id+"' class='form-control trsg' value='0' readonly> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'igst' id='igst_"+row_id+"' class='form-control trig' value='0' readonly> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'totalamount' id='totalamount_"+row_id+"' class='form-control trta' readonly> </td>"
+                addcontrols+= "<td class = 'removed_btn'> <button type='button' class='btn btn-default ' onclick='removeRow(event)'><i class='fa fa-minus'></i></button> </td>"
                 addcontrols+="</tr>";
                 $("table tbody").append(addcontrols);
                 $(".chosen").chosen();
 
         });
 
-      /*
-        $("#delrow").click(function(){
-            $("#product_info_table tbody").find('input[name="checkbox"]').each(function(){
-                if($(this).is(":checked"))
-                {
-                    $(this).parents("tr").remove();
-                }
-            });            
-        });
-      */
        
     });
-    function removeRow(tr_id)
+      
+
+/*-------------------------------------------------Remove Product Row------------------------------------------------------*/ 
+      function removeRow(event)
         {
-            //subGrossAmount(tr_id);
-            $("#product_info_table tbody tr#row_"+tr_id).remove();
-            console.log("row removed: "+tr_id);
-            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-            console.log("table length :"+count_table_tbody_tr);
-        /*
-            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-            for (let i =0; i<count_table_tbody_tr; i++)
+
+            if(event.target.classList.contains('btn-default'))
             {
-                $("#product_info_table tbody tr").id = "row_"+i;
-                console.log("Table Rows = " )
+
+              var removedrowid = event.target.parentElement.parentElement.id;
+              var rid = removedrowid.replace('row_','');
+              var totalamtremovedbox =  "totalamount_" + rid;
+              var totalamtremoved = document.getElementById(totalamtremovedbox).value;
+
+              console.log(totalamtremoved);
+
+              event.target.parentElement.parentElement.remove();
+              
+              subGrossAmount(totalamtremoved);
+
+            }
+            else
+            {
+              var removedrowid = event.target.parentElement.parentElement.parentElement.id;
+              var rid = removedrowid.replace('row_','');
+              var totalamtremovedbox =  "totalamount_" + rid;
+              var totalamtremoved = document.getElementById(totalamtremovedbox).value;
+
+              console.log(totalamtremoved);
+
+              event.target.parentElement.parentElement.parentElement.remove();
+
+              subGrossAmount(totalamtremoved);
+
             }
 
-        */
-           // $("#row_"+tr_id).nextAll().each(function () {
-             //   var id = $(this).prop("id", function (index, idvalue) {
-                //return idvalue - 1;
-             //console.log("each :" + tr_id);
-            //});
-          //});
+
+            event.target.parentElement.parentElement.remove();
+            console.log(event.target.parentElement.parentElement);
+           
+
+        const rows = document.getElementsByClassName('trc');
+       
+        Array.from(rows).forEach((row,index) => {
+            
+            const rowinput = row.getElementsByClassName('trcinput')[0];
+            const rowqty = row.getElementsByClassName('trq')[0];
+            const rowrate = row.getElementsByClassName('trr')[0];
+            const rowtotal = row.getElementsByClassName('trt')[0];
+            const rowcgst = row.getElementsByClassName('trcg')[0];
+            const rowsgst = row.getElementsByClassName('trsg')[0];
+            const rowigst = row.getElementsByClassName('trig')[0];
+            const rowtotalamt = row.getElementsByClassName('trta')[0];
 
 
-        var rows = document.getElementsByClassName('trc');
-        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+            rowinput.value=index+1;
+            var n = index+1;
+            row.id = "row_"+n;
+            rowqty.id = "qty_"+n;
+            rowrate.id = "rate_"+n;
+            rowtotal.id = "total_"+n;
+            rowcgst.id = "cgst_"+n;
+            rowsgst.id = "sgst_"+n;
+            rowigst.id = "igst_"+n;
+            rowtotalamt.id = "totalamount_"+n;
+           
+            
+        });
         
-        for (let i=1; i<count_table_tbody_tr + 1; i++ )
+        
+      }
+
+/*------------------------------------------------------ Get Customer Data----------------------------------------------------*/
+      function getCustData2()
+      {
+        let ele = document.getElementById("customer");
+        
+        var selectedcustname = ele.options[ele.selectedIndex].text;  
+
+        for (let i = 0; i < customerjsdata.length; i++) 
         {
-            rows.id = "row_"+i;
-            console.log(rows.id);
-        }
-        
-        
-        
-        //changeRowId();
-
-                      
+            if(selectedcustname == customerjsdata[i].fields.cust_name)
+            {
+               ck = i;
+            }
         }
 
-
-    function changeRowId()
-    {
-
-        var rows = document.getElementsByClassName('trc');
-        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-        ele = document.getElementById('')
-        for (let i=1; i<count_table_tbody_tr + 1; i++ )
-        {
-            rows.id = "row_"+i;
-            console.log(rows.id);
-        }
-    }
-  
+        custaddressele = document.getElementById("custaddress")
+        custaddressele.innerHTML += customerjsdata[ck].fields.cust_address
+        custphnoele = document.getElementById("custphno")
+        custphnoele.innerHTML += customerjsdata[ck].fields.cust_phno
+        custemailele = document.getElementById("custemail")
+        custemailele.innerHTML += customerjsdata[ck].fields.cust_email
       
-    function getProductData(row_id)
+      }
+
+
+/*------------------------------------------------------ Get Customer Data----------------------------------------------------*/
+function getCustData()
+{
+  let ele = document.getElementById("customer");
+  
+  var selectedcustname = ele.options[ele.selectedIndex].text;  
+
+  for (let i = 0; i < customerjsdata.length; i++) 
+  {
+      if(selectedcustname == customerjsdata[i].fields.cust_name)
+      {
+         ck = i;
+      }
+  }
+
+  custaddressele = document.getElementById("custaddress")
+  custaddressele.value = customerjsdata[ck].fields.cust_address
+  custphnoele = document.getElementById("custphno")
+  custphnoele.value = customerjsdata[ck].fields.cust_phno
+  custemailele = document.getElementById("custemail")
+  custemailele.value = customerjsdata[ck].fields.cust_email
+
+}
+
+
+
+
+
+/*----------------------------------------------------- Get Product Data------------------------------------------------------------*/
+      function getProductData(event, row_id)
       {
         console.log(row_id);
         var product_id = "product_"+row_id; 
         let ele = document.getElementById(product_id);
-        
+
+
+
+       const selectedproductname = event.target[event.target.selectedIndex].text; 
+      // console.log(pselection);
+
         var rate_id = "rate_"+row_id;
         var cgst_id = "cgst_"+row_id;
         var sgst_id = "sgst_"+row_id;
@@ -742,7 +843,8 @@
         var total_id = "total_"+row_id;
         var totalamount_id = "totalamount_"+row_id;
    
-        var selectedproductname = ele.options[ele.selectedIndex].text;  
+        //var selectedproductname = ele.options[ele.selectedIndex].text;  
+        console.log(selectedproductname);
 
         for (let i = 0; i < productjsdata.length; i++) 
         {
@@ -774,34 +876,14 @@
           document.getElementById(totalamount_id).value= totalamountvalue // put total amount in total amount textbox
         }   
 
-       // getGrossAmount(row_id);
+        getGrossAmount(row_id);
       }
 
-      function getCustData()
-      {
-        let ele = document.getElementById("customer");
-        
-        var selectedcustname = ele.options[ele.selectedIndex].text;  
 
-        for (let i = 0; i < customerjsdata.length; i++) 
-        {
-            if(selectedcustname == customerjsdata[i].fields.cust_name)
-            {
-               ck = i;
-            }
-        }
-
-        custaddressele = document.getElementById("custaddress")
-        custaddressele.innerHTML += customerjsdata[ck].fields.cust_address
-        custphnoele = document.getElementById("custphno")
-        custphnoele.innerHTML += customerjsdata[ck].fields.cust_phno
-        custemailele = document.getElementById("custemail")
-        custemailele.innerHTML += customerjsdata[ck].fields.cust_email
-      
-      }
-  
+ /*-------------------------------------------- Product Quantity Changed -----------------------------------------------------------*/
       function ProductQtyChanged(row_id)
       {
+        console.log("Product Quantity Changed")
         var qty_id = "qty_"+row_id; 
         var qi = document.getElementById(qty_id).value; // quantity value stored in i
            
@@ -858,6 +940,8 @@
         
       }
 
+
+  /*----------------------------------------------------- Get Gross Amount-----------------------------------------------------------------*/
       const totalAmountArray = [];
       var storedgrossamount = 0;
       function getGrossAmount(row_id)
@@ -893,52 +977,160 @@
         
         
         document.getElementById("gross_amount").value= grossamountvalue;
+        document.getElementById("net_amount").value= grossamountvalue;
         storedgrossamount = grossamountvalue;
         console.log(storedgrossamount);
         
       }
 
-
-      function subGrossAmount(row_id)
+ /*---------------------------------------------------------- Sub Gross Amount ---------------------------------------------------------------*/
+      function subGrossAmount(tar)
       {
-          //var productrow = totalAmountArray.find(x => x.rowid == row_id);
-         // if(productrow)
-          //{
-           // delete totalAmountArray.rowid[row_id];
-            //delete totalAmountArray.ptamount[row_id];
-          //}
 
-        delete totalAmountArray[row_id - 1];
-        totalAmountArray.filter(x => x !== null);
-        //totalAmountArray.length = totalAmountArray.length - 1;
-        console.log(totalAmountArray);
+          var currentgrossamount = storedgrossamount;
+          var minusgrossamount = currentgrossamount - tar;
+          console.log(minusgrossamount);
+          storedgrossamount = minusgrossamount;
 
+          console.log(storedgrossamount);
+          
+          document.getElementById("gross_amount").value = storedgrossamount;
+          document.getElementById("net_amount").value = storedgrossamount;
 
-        var currentgrossamount = storedgrossamount
-        console.log(currentgrossamount);
-        var totalamount_id = "totalamount_"+row_id; 
-        var tamount = parseInt(document.getElementById(totalamount_id).value);
-        console.log(tamount);
-        sgrossamountvalue = currentgrossamount - tamount;
-        console.log(sgrossamountvalue);
-        storedgrossamount = sgrossamountvalue;
-        console.log(totalAmountArray);
+          totalAmountArray.length = 0;
+
+          const rows = document.getElementsByClassName('trc');
+          Array.from(rows).forEach((row,index) => {
+
+            var n = index+1;
+            row.id = "row_"+n;
+            const rowidvalue = row.id;
+            console.log("rows are: ", rowidvalue );
+            const totalamtvalue = row.getElementsByClassName('trta')[0].value;
+            console.log("total amt values are:",totalamtvalue);
+
+            var object = {
+              rowid : n,
+              ptamount: totalamtvalue
+
+            }
+            
+            totalAmountArray.push(object);
+
+          });
+          console.log(totalAmountArray);
         
-
-        /*
-          var total_id = "total_"+row_id;
-          var totalvalue = parseInt(document.getElementById("gross_amount").value);
-          sgrossamountvalue = sgrossamountvalue - totalvalue;
-          console.log(sgrossamountvalue);
-          document.getElementById("gross_amount").value= sgrossamountvalue;
-
-        */
       }
 
+  /*--------------------------------------------------------- Get Net Amount ------------------------------------------------------------*/
+      function getNetAmount()
+      {
+          grossvalue = document.getElementById("gross_amount").value;
+          discountvalue = document.getElementById("discount").value;
+          netamountvalue = grossvalue * discountvalue / 100;
+          document.getElementById("net_amount").value = grossvalue - netamountvalue;
+      }
 
-    $(".chosen").chosen();
+  /*--------------------------------------------------------- Get Invoice No ------------------------------------------------------------*/
+      function getInvoiceNo()
+      {
+        let invoicenoval = 0;
+        for (let i = orderjsdata.length-1; i < orderjsdata.length; i++) { 
+          invoicenoval = orderjsdata[i].pk;
+         };
+
+        document.getElementById("invoiceno").value = invoicenoval + 1;
+      }
+
+  /*--------------------------------------------------------- Product Record Store ------------------------------------------------------------*/
+
+  function productRecordsStore()
+  {
+      var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+      var product_arr=';' ;
+      var qty_arr=';'  ;
+      var rate_arr=';' ;
+      var total_arr=';' ;
+      var cgst_arr=';' ;
+      var sgst_arr=';' ;
+      var igst_arr=';' ;
+      var totalamount_arr=';' ;
+
+      for(let i =1; i<count_table_tbody_tr+1; i++ )
+      {
+        var p = document.getElementById('product_'+i).value;
+        product_arr +=  p + ';'
+        var q = document.getElementById('qty_'+i).value;
+        qty_arr += q + ';'
+        var r = document.getElementById('rate_'+i).value;
+        rate_arr += r + ';'    
+        var t = document.getElementById('total_'+i).value;
+        total_arr +=  t + ';'
+        var c = document.getElementById('cgst_'+i).value;
+        cgst_arr +=  c + ';'
+        var s = document.getElementById('sgst_'+i).value;
+        sgst_arr +=  s + ';'
+        var ig = document.getElementById('igst_'+i).value;
+        igst_arr += ig + ';'
+        var ta = document.getElementById('totalamount_'+i).value;
+        totalamount_arr +=  ta  + ';' 
+      }
+
+      document.getElementById("product_ar").value = JSON.stringify(product_arr);
+      document.getElementById("qty_ar").value = JSON.stringify(qty_arr);
+      document.getElementById("rate_ar").value = JSON.stringify(rate_arr);
+      document.getElementById("total_ar").value = JSON.stringify(total_arr);
+      document.getElementById("cgst_ar").value = JSON.stringify(cgst_arr);
+      document.getElementById("sgst_ar").value = JSON.stringify(sgst_arr);
+      document.getElementById("igst_ar").value = JSON.stringify(igst_arr);
+      document.getElementById("totalamount_ar").value = JSON.stringify(totalamount_arr);
+      document.getElementById("tablerowcnt").value = count_table_tbody_tr;
+    
+      console.log( document.getElementById("product_ar").value);
+      console.log( document.getElementById("qty_ar").value);
+      console.log( document.getElementById("rate_ar").value);
+      console.log( document.getElementById("total_ar").value);
+      console.log( document.getElementById("cgst_ar").value);
+      console.log( document.getElementById("sgst_ar").value);
+      console.log( document.getElementById("igst_ar").value);
+      console.log( document.getElementById("totalamount_ar").value);
+      console.log(document.getElementById("tablerowcnt").value);
+  
+
+  }
+
+  $(".chosen").chosen();
     
 </script>
+
+<script>
+  /*----------------------------------------------------- Get Date and Time-----------------------------------------------------------------*/
+  function startTime() {
+  
+    const today = new Date();
+    let h = today.getHours();
+    let m = today.getMinutes();
+    let s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    let timelabelvalue =  h + ":" + m + ":" + s;
+    document.getElementById('timelabel').value =  timelabelvalue;
+    setTimeout(startTime, 1000);
+    
+
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    todaydate = yyyy + '-' + mm + '-' + dd;
+    document.getElementById('datelabel').value = todaydate;
+  }
+  
+  function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+  }
+  </script>
+  
 
 
 </body>

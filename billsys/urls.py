@@ -29,6 +29,7 @@ urlpatterns = [
     path('vendors/',include('vendors.urls')),
     path('company/',include('master.urls')),
     path('invoices/',include('invoices.urls')),
+    path('purchase/',include('purchase.urls')),
 
 ]
 

@@ -31,7 +31,7 @@
 
   
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" onload="startTime()">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -372,7 +372,9 @@
                     <img src="{{companydata.logoimg.url}}" alt="User Image" width="140" height="150">
                     <h4 class="company_name">{{companydata.name}}</h3>
                   </div>
-                    <div class="float-right">Date: 2/10/2014</div>    
+                    <div class="float-right"> <label id="timelabel"> </label> </div>  
+                    <div class="float-right"> <label id="timelabel"> - </label> </div>      
+                    <div class="float-right"> <label id="datelabel"> </label> </div>    
                 </div>
                 <!-- /.col -->
               </div>
@@ -419,6 +421,7 @@
                   <table class="table table-bordered" id="product_info_table">
                   <thead>
                     <tr>
+                      <th style="width:5%">pno</th>
                       <th style="width:25%">Product</th>
                       <th style="width:10%">Qty</th>
                       <th style="width:10%">Rate</th>
@@ -432,9 +435,11 @@
                   </thead>
 
                    <tbody>
-                     <tr id="row_1">
+                     <tr id="row_1" class ="trc">
+                     <td><input type="text"  value = '1' name="qty[]" id="pno_1" class="form-control trcinput" required  ></td>
+
                        <td>
-                        <select class="form-control chosen" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
+                        <select class="form-control chosen trs" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(event, 1)" required>
                             <option value=""></option>
                             {%for selectedproducto in selectproduct%}
                               <option value="{{selectedproducto.id}}">{{selectedproducto.product_name}}</option>
@@ -442,32 +447,26 @@
                         </select>
                         <input type="hidden" value='{{productdata}}' id="productjs">
                         </td>
-                        <td><input type="text" name="qty[]" id="qty_1" class="form-control" required  oninput="ProductQtyChanged(1)"></td>
+                        <td><input type="text" name="qty[]" id="qty_1" class="form-control trq" required  oninput="ProductQtyChanged(1)"></td>
                         <td>
-                          <input type="text" name="rate[]" id="rate_1" class="form-control" disabled autocomplete="off">
-                          <input type="hidden" name="rate_value[]" id="rate_value_1" class="form-control" autocomplete="off">
+                          <input type="text" name="rate[]" id="rate_1" class="form-control trr" disabled autocomplete="off">
                         </td>
                         <td>
-                          <input type="text" name="total[]" id="total_1" class="form-control" disabled autocomplete="off">
-                          <input type="hidden" name="total_value[]" id="total_value_1" class="form-control" autocomplete="off">
+                          <input type="text" name="total[]" id="total_1" class="form-control trt" disabled autocomplete="off">
                         </td>
                         <td>
-                          <input type="text" name="cgst[]" id="cgst_1" class="form-control" disabled autocomplete="off">
-                          <input type="hidden" name="cgst_value[]" id="cgst_value_1" class="form-control" autocomplete="off">
+                          <input type="text" name="cgst[]" id="cgst_1" class="form-control trcg" disabled autocomplete="off">
                         </td>
                         <td>
-                          <input type="text" name="sgst[]" id="sgst_1" class="form-control" disabled autocomplete="off">
-                          <input type="hidden" name="sgst_value[]" id="sgst_value_1" class="form-control" autocomplete="off">
+                          <input type="text" name="sgst[]" id="sgst_1" class="form-control trsg" disabled autocomplete="off">
                         </td>
                         <td>
-                          <input type="text" name="igst[]" id="igst_1" class="form-control" disabled autocomplete="off">
-                          <input type="hidden" name="igst_value[]" id="igst_value_1" class="form-control" autocomplete="off">
+                          <input type="text" name="igst[]" id="igst_1" class="form-control trig" disabled autocomplete="off">
                         </td>
                         <td>
-                          <input type="text" name="totalamount[]" id="totalamount_1" class="form-control" disabled autocomplete="off">
-                          <input type="hidden" name="totalamount_value[]" id="totalamount_value_1" class="form-control" autocomplete="off">
+                          <input type="text" name="totalamount[]" id="totalamount_1" class="form-control trta" disabled autocomplete="off">
                         </td>
-                        <td><button type="button" class="btn btn-default" onclick="removeRow('1')"><i class="fa fa-minus"></i></button></td>
+                        <td class = "removed_btn"><button type="button" class="btn btn-default " onclick="removeRow(event)"><i class="fa fa-minus"></i></button></td>
                      </tr>
                     
                    </tbody>
@@ -476,11 +475,7 @@
                 <!-- /.col -->
               </div>
               <!-- /.row -->
-
-           
-
-              <!-- this row will not appear when printing -->
-              
+             
 
               <div class="row">
                 <div class="col-12 " >
@@ -494,8 +489,8 @@
               <div class="row">
                 <div class="col-12 " >
                   <div class="form-group col-sm-5" style="float:right;">
-                    <label for="discount" class="control-label">Discount :</label>
-                    <input type="text" class="form-control" id="discount" name="discount" autocomplete="off">
+                    <label for="discount" class="control-label">Discount % :</label>
+                    <input type="text" class="form-control" id="discount" name="discount" autocomplete="off" oninput=getNetAmount()>
                   </div>
                 </div>
               </div>
@@ -640,62 +635,148 @@
     const customerdata = document.getElementById("custjs");
     const customerjsdata= JSON.parse(customerdata.value);
     console.log(customerjsdata);
-   
+
+    
+  /*--------------------------------------------------- Add New Row in Table ---------------------------------------------*/
+    $(document).ready(function() {
         $("#add_row").click(function(){
       
-            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-            var row_id = count_table_tbody_tr + 1;
-            var addcontrols = "<tr id = 'row_"+row_id+"'>"  
-                addcontrols+= "<td> <select class='form-control chosen' data-row-id='"+row_id+"' id='product_"+row_id+"' name='product[]' style='width:100%;' onchange='getProductData("+row_id+")' >"
+          var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+          var row_id = count_table_tbody_tr + 1;
+            var addcontrols = "<tr id = 'row_"+row_id+"' class='trc' >" 
+                addcontrols +="<td> <input type = 'text' class= 'trcinput' value = '"+row_id +"' id = 'pno_'"+row_id+"''> </td> "
+                console.log("row added" + row_id);
+                addcontrols+= "<td> <select class='form-control chosen trs' data-row-id='"+row_id+"' id='product_"+row_id+"' name='product[]' style='width:100%;' onchange='getProductData(event,"+row_id+")' >"
                 addcontrols+= "<option value = ''> </option>"  
                 for (let i = 0; i < productjsdata.length; i++) { 
                     addcontrols+= "<option value = '"+productjsdata[i].fields.product_name+"'>"+productjsdata[i].fields.product_name+" </option>"
                 };
                 addcontrols+= "</select> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'qty[]' id='qty_"+row_id+"' class='form-control'  autocomplete='off'  oninput='ProductQtyChanged("+row_id+")'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'rate[]' id='rate_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'total[]' id='total_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'cgst[]' id='cgst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'sgst[]' id='sgst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'igst[]' id='igst_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <input type = 'text' name = 'totalamount[]' id='totalamount_"+row_id+"' class='form-control' disabled autocomplete='off'> </td>"
-                addcontrols+= "<td> <button type='button' class='btn btn-default' onclick='removeRow(\""+row_id+"\")'><i class='fa fa-minus'></i></button> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'qty[]' id='qty_"+row_id+"' class='form-control trq'  autocomplete='off'  oninput='ProductQtyChanged("+row_id+")'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'rate[]' id='rate_"+row_id+"' class='form-control trr' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'total[]' id='total_"+row_id+"' class='form-control trt' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'cgst[]' id='cgst_"+row_id+"' class='form-control trcg' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'sgst[]' id='sgst_"+row_id+"' class='form-control trsg' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'igst[]' id='igst_"+row_id+"' class='form-control trig' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td> <input type = 'text' name = 'totalamount[]' id='totalamount_"+row_id+"' class='form-control trta' disabled autocomplete='off'> </td>"
+                addcontrols+= "<td class = 'removed_btn'> <button type='button' class='btn btn-default ' onclick='removeRow(event)'><i class='fa fa-minus'></i></button> </td>"
                 addcontrols+="</tr>";
                 $("table tbody").append(addcontrols);
                 $(".chosen").chosen();
+
         });
-   
-    
-    /*
-    function getProductData(row_id){
-      console.log(row_id);
-       var product_id = "product_"+row_id; 
-       console.log(product_id);
-       let ele = document.getElementById(product_id);
-       console.log(ele);
-         for (let i = 0; i < productjsdata.length; i++) { 
-            let option = document.createElement('option')
-            option.value = productjsdata[i].product_name
-            option.textContent = productjsdata[i].product_name
-            console.log(productjsdata[i].product_name)
-            ele.appendChild(option)            
-            };
-          
-      }
-      */
-    
-  
-    function removeRow(tr_id)
+
+       
+    });
+      
+
+/*-------------------------------------------------Remove Product Row------------------------------------------------------*/ 
+      function removeRow(event)
         {
-            $("#product_info_table tbody tr#row_"+tr_id).remove();
+
+            if(event.target.classList.contains('btn-default'))
+            {
+
+              var removedrowid = event.target.parentElement.parentElement.id;
+              var rid = removedrowid.replace('row_','');
+              var totalamtremovedbox =  "totalamount_" + rid;
+              var totalamtremoved = document.getElementById(totalamtremovedbox).value;
+
+              console.log(totalamtremoved);
+
+              event.target.parentElement.parentElement.remove();
+              
+              subGrossAmount(totalamtremoved);
+
+            }
+            else
+            {
+              var removedrowid = event.target.parentElement.parentElement.parentElement.id;
+              var rid = removedrowid.replace('row_','');
+              var totalamtremovedbox =  "totalamount_" + rid;
+              var totalamtremoved = document.getElementById(totalamtremovedbox).value;
+
+              console.log(totalamtremoved);
+
+              event.target.parentElement.parentElement.parentElement.remove();
+
+              subGrossAmount(totalamtremoved);
+
+            }
+
+
+            event.target.parentElement.parentElement.remove();
+            console.log(event.target.parentElement.parentElement);
+           
+
+        const rows = document.getElementsByClassName('trc');
+       
+        Array.from(rows).forEach((row,index) => {
             
+            const rowinput = row.getElementsByClassName('trcinput')[0];
+            const rowqty = row.getElementsByClassName('trq')[0];
+            const rowrate = row.getElementsByClassName('trr')[0];
+            const rowtotal = row.getElementsByClassName('trt')[0];
+            const rowcgst = row.getElementsByClassName('trcg')[0];
+            const rowsgst = row.getElementsByClassName('trsg')[0];
+            const rowigst = row.getElementsByClassName('trig')[0];
+            const rowtotalamt = row.getElementsByClassName('trta')[0];
+
+
+            rowinput.value=index+1;
+            var n = index+1;
+            row.id = "row_"+n;
+            rowqty.id = "qty_"+n;
+            rowrate.id = "rate_"+n;
+            rowtotal.id = "total_"+n;
+            rowcgst.id = "cgst_"+n;
+            rowsgst.id = "sgst_"+n;
+            rowigst.id = "igst_"+n;
+            rowtotalamt.id = "totalamount_"+n;
+           
+            
+        });
+        
+        
+      }
+
+/*------------------------------------------------------ Get Customer Data----------------------------------------------------*/
+      function getCustData()
+      {
+        let ele = document.getElementById("customer");
+        
+        var selectedcustname = ele.options[ele.selectedIndex].text;  
+
+        for (let i = 0; i < customerjsdata.length; i++) 
+        {
+            if(selectedcustname == customerjsdata[i].fields.cust_name)
+            {
+               ck = i;
+            }
         }
 
-    function getProductData(row_id)
+        custaddressele = document.getElementById("custaddress")
+        custaddressele.innerHTML += customerjsdata[ck].fields.cust_address
+        custphnoele = document.getElementById("custphno")
+        custphnoele.innerHTML += customerjsdata[ck].fields.cust_phno
+        custemailele = document.getElementById("custemail")
+        custemailele.innerHTML += customerjsdata[ck].fields.cust_email
+      
+      }
+
+
+/*----------------------------------------------------- Get Product Data------------------------------------------------------------*/
+      function getProductData(event, row_id)
       {
+        console.log(row_id);
         var product_id = "product_"+row_id; 
         let ele = document.getElementById(product_id);
-        
+
+
+
+       const selectedproductname = event.target[event.target.selectedIndex].text; 
+      // console.log(pselection);
+
         var rate_id = "rate_"+row_id;
         var cgst_id = "cgst_"+row_id;
         var sgst_id = "sgst_"+row_id;
@@ -704,7 +785,8 @@
         var total_id = "total_"+row_id;
         var totalamount_id = "totalamount_"+row_id;
    
-        var selectedproductname = ele.options[ele.selectedIndex].text;  
+        //var selectedproductname = ele.options[ele.selectedIndex].text;  
+        console.log(selectedproductname);
 
         for (let i = 0; i < productjsdata.length; i++) 
         {
@@ -735,33 +817,15 @@
           var totalamountvalue = totalrate + totalgstvalue // total amount = total rate + total gst
           document.getElementById(totalamount_id).value= totalamountvalue // put total amount in total amount textbox
         }   
+
+        getGrossAmount(row_id);
       }
 
-      function getCustData()
-      {
-        let ele = document.getElementById("customer");
-        
-        var selectedcustname = ele.options[ele.selectedIndex].text;  
 
-        for (let i = 0; i < customerjsdata.length; i++) 
-        {
-            if(selectedcustname == customerjsdata[i].fields.cust_name)
-            {
-               ck = i;
-            }
-        }
-
-        custaddressele = document.getElementById("custaddress")
-        custaddressele.innerHTML += customerjsdata[ck].fields.cust_address
-        custphnoele = document.getElementById("custphno")
-        custphnoele.innerHTML += customerjsdata[ck].fields.cust_phno
-        custemailele = document.getElementById("custemail")
-        custemailele.innerHTML += customerjsdata[ck].fields.cust_email
-      
-      }
-  
+ /*-------------------------------------------- Product Quantity Changed -----------------------------------------------------------*/
       function ProductQtyChanged(row_id)
       {
+        console.log("Product Quantity Changed")
         var qty_id = "qty_"+row_id; 
         var qi = document.getElementById(qty_id).value; // quantity value stored in i
            
@@ -812,17 +876,133 @@
           var totalamountvalue = (totalrate + totalgstvalue) * qi;
           document.getElementById(totalamount_id).value= totalamountvalue // put total amount in total amount textbox
 
-        }   
+        }
+
+        getGrossAmount(row_id);   
         
       }
 
 
+  /*----------------------------------------------------- Get Gross Amount-----------------------------------------------------------------*/
+      const totalAmountArray = [];
+      var storedgrossamount = 0;
+      function getGrossAmount(row_id)
+      {
+        var product_id = "product_"+row_id; 
+        let ele = document.getElementById(product_id);
+        var selectedproductname = ele.options[ele.selectedIndex].text;  
+
+        var totalamount_id = "totalamount_"+row_id; 
+        var tamount = document.getElementById(totalamount_id).value;
+
+       
+
+        var productrow = totalAmountArray.find(x => x.rowid == row_id);
+        if (productrow) {
+          productrow.ptamount = tamount;
+        }
+        else{
+           var object = {
+            rowid: row_id,
+            ptamount : tamount
+          }
+          totalAmountArray.push(object);
+        }
+        console.log(totalAmountArray);
+
+
+        var grossamountvalue = 0;
+        for (let i = 0; i < totalAmountArray.length; i++) 
+        {
+            grossamountvalue = grossamountvalue + parseInt(totalAmountArray[i].ptamount);
+        }
+        
+        
+        document.getElementById("gross_amount").value= grossamountvalue;
+        document.getElementById("net_amount").value= grossamountvalue;
+        storedgrossamount = grossamountvalue;
+        console.log(storedgrossamount);
+        
+      }
+
+ /*---------------------------------------------------------- Sub Gross Amount ---------------------------------------------------------------*/
+      function subGrossAmount(tar)
+      {
+
+          var currentgrossamount = storedgrossamount;
+          var minusgrossamount = currentgrossamount - tar;
+          console.log(minusgrossamount);
+          storedgrossamount = minusgrossamount;
+
+          console.log(storedgrossamount);
+          
+          document.getElementById("gross_amount").value = storedgrossamount;
+          document.getElementById("net_amount").value = storedgrossamount;
+
+          totalAmountArray.length = 0;
+
+          const rows = document.getElementsByClassName('trc');
+          Array.from(rows).forEach((row,index) => {
+
+            var n = index+1;
+            row.id = "row_"+n;
+            const rowidvalue = row.id;
+            console.log("rows are: ", rowidvalue );
+            const totalamtvalue = row.getElementsByClassName('trta')[0].value;
+            console.log("total amt values are:",totalamtvalue);
+
+            var object = {
+              rowid : n,
+              ptamount: totalamtvalue
+
+            }
+            
+            totalAmountArray.push(object);
+
+          });
+          console.log(totalAmountArray);
+        
+      }
+
+  /*--------------------------------------------------------- Get Net Amount ------------------------------------------------------------*/
+      function getNetAmount()
+      {
+          grossvalue = document.getElementById("gross_amount").value;
+          discountvalue = document.getElementById("discount").value;
+          netamountvalue = grossvalue * discountvalue / 100;
+          document.getElementById("net_amount").value = grossvalue - netamountvalue;
+      }
+
     $(".chosen").chosen();
-
-
     
 </script>
 
+<script>
+  /*----------------------------------------------------- Get Date and Time-----------------------------------------------------------------*/
+  function startTime() {
+  
+    const today = new Date();
+    let h = today.getHours();
+    let m = today.getMinutes();
+    let s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('timelabel').innerHTML =  h + ":" + m + ":" + s;
+    setTimeout(startTime, 1000);
+  
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    todaydate = dd + '/' + mm + '/' + yyyy;
+    document.getElementById('datelabel').innerHTML = todaydate;
+  }
+  
+  function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+  }
+  </script>
+  
 
 
 </body>

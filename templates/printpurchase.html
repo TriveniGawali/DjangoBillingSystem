@@ -1,0 +1,111 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Billing System | Print Purchase</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{%static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{%static 'dist/css/adminlte.min.css' %}">
+</head>
+<body>
+<div class="wrapper">
+  <!-- Main content -->
+  <section class="invoice">
+    <!-- title row -->
+    <div class="row">
+      <div class="col-12">
+          <div class="float-right"> {{printpurchasedata.pur_time}} </div>  
+          <div class="float-right"> <label id="-"> Time: </label> </div>      
+          <div class="float-right"> {{printpurchasedata.pur_date}} &nbsp; </div> 
+          <div class="float-right"> <label id="-"> Date: </label> </div>           
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- info row -->
+    <div class="row invoice-info">
+      <!-- /.col -->
+      <div class="col-sm-4 invoice-col">
+        <h5>Vendor:</h5>
+        <address>
+          <strong>{{printpurchasedata.ven_name}}</strong><br>
+          <strong>{{printpurchasedata.com_name}}</strong><br>
+          {{printpurchasedata.address}}<br>
+          Phone: {{printpurchasedata.phone}}<br>
+          Email: {{printpurchasedata.emailid}}<br>
+          Purchase No: <input type = "text" value = "{{printpurchasedata.id}}" id = "purno" name="purno" style="border: 0px none;" readonly >
+          <input type = "hidden" value='{{purchasedataj}}' id="purchasejs" >
+        </address>
+      </div>
+      <!-- /.col -->
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <!-- Table row -->
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>Total Amount</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for result in printpurproddata%}
+            <tr> 
+              <td>{{result.pname}}</td>
+              <td>{{result.pqty}}</td>
+              <td>{{result.prate}}</td>
+              <td>{{result.ptotalamount}}</td>
+            </tr>
+          {%endfor%}
+          </tbody>
+        </table>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+      <!-- /.col -->
+      <div class="col-6">
+        <div class="table-responsive">
+          <table class="table" >
+            <tr>
+              <th style="width:50%">Gross Amount:</th>
+              <td>{{printpurchasedata.gross_a}}</td>
+            </tr>
+            <tr >
+              <th>Tax:</th>
+              <td>{{printpurchasedata.tax}}</td>
+            </tr>
+            <tr>
+              <th>Invoice Amount:</th>
+              <td>{{printpurchasedata.invoice_amt}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- ./wrapper -->
+<!-- Page specific script -->
+<script>
+  window.addEventListener("load", window.print());
+  
+</script>
+</body>
+</html>
